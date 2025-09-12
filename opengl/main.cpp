@@ -88,7 +88,7 @@ int main()
     // Load Image
     // Texture Coords are inverted in their y-axis. For images, top is 0 and bottom 1. For Texture, top is 1 and bottom 0.
     // So we need to invert the image before loading.
-    stbi_set_flip_vertically_on_load(true);
+    //stbi_set_flip_vertically_on_load(true);
     imageData = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
     if (imageData) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
