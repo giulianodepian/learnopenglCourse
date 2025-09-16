@@ -15,6 +15,8 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+float mixPercentage = 0.2f;
+
 int main()
 {
     // glfw: initialize and configure
@@ -104,6 +106,7 @@ int main()
     shaderProgram.use();
     shaderProgram.setInt("texture1", 0);
     shaderProgram.setInt("texture2", 1);
+    shaderProgram.setFloat("mixParameter", mixPercentage);
    
 
 
@@ -180,6 +183,7 @@ int main()
 
         // draw our first triangle
         shaderProgram.use();
+        shaderProgram.setFloat("mixParameter", mixPercentage);
         glBindVertexArray(vaoId); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         //glDrawArrays(GL_TRIANGLES, 0, 3); when not using indices, we use glDrawArrays,
         // Set textures to a specific texture unit
@@ -217,6 +221,10 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (mixPercentage < 1.0 && glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        mixPercentage += 0.0001f;
+    if (mixPercentage > 0.0 && glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        mixPercentage -= 0.0001f;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
