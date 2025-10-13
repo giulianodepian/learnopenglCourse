@@ -193,7 +193,7 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, textureIds[1]);
 
-        //Create Matrix Transform
+        // Create Matrix Transform
         glm::mat4 trans = glm::mat4(1.0f);
         trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
         trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -204,6 +204,25 @@ int main()
         // Bind and Draw Triangle based in indices
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        // Second container
+        // ----------------
+        // The sine function returns values from -1 to 1.
+        // Multiplying by 0.5 gives a range of -0.5 to 0.5.
+        // Adding 0.5 shifts the range to 0 to 1.
+        // So 'scalar' smoothly oscillates between 0 and 1 over time.
+        float scalar = 0.5f + sin((float)glfwGetTime())*0.5f;
+
+        // Second Matrix Transform
+        trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
+        trans = glm::scale(trans, glm::vec3(scalar, scalar, 0));
+
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+        // Draw Second triangle
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
         // glBindVertexArray(0); // no need to unbind it every time 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
