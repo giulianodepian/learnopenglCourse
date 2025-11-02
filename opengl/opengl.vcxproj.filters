@@ -32,6 +32,9 @@
     <ClInclude Include="stb_image.h">
       <Filter>Archivos de origen</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Archivos de origen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="fragment.fs" />
