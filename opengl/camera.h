@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement {
@@ -61,7 +62,22 @@ public:
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix()
     {
-        return glm::lookAt(Position, Position + Direction, Up);
+        return GetLookAtMatrix(Position, Position + Direction, Up);
+    }
+
+    glm::mat4 GetLookAtMatrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp) {
+        glm::vec3 directionVector = glm::normalize(position - target);
+        glm::vec3 rightVector = glm::normalize(glm::cross(worldUp, directionVector));
+        glm::vec3 upVector = glm::cross(directionVector, rightVector);
+        float rotationMatrix[16] = {
+            rightVector.x, upVector.x, directionVector.x, 0.0f,
+            rightVector.y, upVector.y, directionVector.y, 0.0f,
+            rightVector.z, upVector.z, directionVector.z, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f,
+        };
+        glm::mat4 translation = glm::mat4(1.0f);
+        translation = glm::translate(translation, -position);
+        return glm::make_mat4(rotationMatrix) * translation;
     }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
